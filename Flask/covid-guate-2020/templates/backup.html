@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>COVID19 - UMG</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/style.css') }}">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/static/favicon.ico" sizes="16x16">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datasource@0.1.0"></script>
+    <script src="{{ url_for('static', filename='/js/chart_config.js') }}"></script>
+  </head>
+  <body class="overflow-auto">
+    <nav class="navbar navbar-dark bg-dark" >
+      <a class="navbar-brand" href="#"><strong>COVID-19 - Inteligencia Artificial</strong></a>
+    </nav>   
+
+    <div class="container">
+      <img src="{{ url_for('static', filename='/img/cover.png')}}" alt="coronavirus" height="30%" width="30%">
+    <!-- Informacion General -->
+    <table class="table table-sm">
+      <thead align="center">
+        <tr>
+          <td colspan="12" class="bg-dark"><h1 class="text-white h3">Informacion General</h1></td>
+      </tr>
+        <tr class="table-primary">
+          <th scope="col">Infectados</th>
+          <th scope="col">Recuperados</th>
+          <th scope="col">Fallecidos</th>
+          <th scope="col">Activos</th>
+          <th scope="col">Test realizados</th>
+          <th scope="col">Poblacion Guatemala</th>
+          <th scope="col">Porcentaje por Poblacion Total</th>
+        </tr>
+      </thead>
+      <tbody align="center">
+        <tr style="align-text: center;">          
+          <td>{{general["Confirmed"]}}</td>
+          <td class="table-success">{{general["Recovered"]}}</td>
+          <td class="table-danger">{{general["Deaths"]}}</td>
+          <td>{{general["Active"]}}</td>
+          <td>7200</td>          
+          <td>18 047 395</td>
+          <td>%{{general['porcentajeFinal']}}</td>
+        </tr>        
+      </tbody>
+    </table>
+    </div>
+
+    <!--<div class="container">
+      <h1 class="h1">Casos Infectados</h1>
+      <img src="{{ url_for('static', filename='/graficas/casosConfirmados.png') }}" alt="coronavirus" height="70%" width="70%"><br>
+      
+      <h1 class="h1">Casos Recuperados</h1>
+      <img src="{{ url_for('static', filename='/graficas/casosRecuperados.png') }}" alt="coronavirus" height="70%" width="70%"><br>
+
+      <h1 class="h1">Casos Fallecidos</h1>      
+      <img src="{{ url_for('static', filename='/graficas/casosMuertos.png') }}" alt="coronavirus" height="70%" width="70%"><br>
+      <button class="btn btn-primary" onclick="updateFig()">Actualizar Graficas</button><br>
+    </div> -->
+
+    <!-- ChartJS -->
+    <script>
+        var chartColors = {
+          redLight: 'rgb(255, 99, 132)',
+          blue: 'rgb(54, 162, 235)',
+          green: 'rgb(54, 235, 87)',
+          red: 'rgb(235, 54, 54)',
+          black: 'rgb(23, 22, 22)'
+        };
+
+        var color = Chart.helpers.color;
+
+        var configCasos = {
+          type: 'line',
+          data: {
+          datasets: [{
+              type: 'line',
+              yAxisID: 'casos',
+              backgroundColor: 'transparent',
+              borderColor: chartColors.blue,
+              pointBackgroundColor: chartColors.redLight,
+              tension: 0,
+              fill: false
+            }, {
+              yAxisID: 'fecha',
+              backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+              borderColor: 'transparent'
+            }]
+          },
+          plugins: [ChartDataSource],
+          options: {
+            title: {
+              display: true,
+              text: 'Casos de Coronavirus'
+            },
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Fecha desde Caso Uno'
+                }
+              }],
+              yAxes: [{
+                id: 'casos',
+                gridLines: {
+                  drawOnChartArea: false
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Numero de Casos'
+                }
+              }]
+            },
+            plugins: {
+              datasource: {
+                type: 'csv',
+                url: "{{ url_for('static', filename='/datasets/casosConfirmados.csv') }}",
+                delimiter: ',',
+                rowMapping: 'dataset',
+                datasetLabels: true,
+                indexLabels: true
+              }
+            }
+          }
+        };
+
+        var configRecuperados = {
+          type: 'line',
+          data: {
+          datasets: [{
+              type: 'line',
+              yAxisID: 'casos',
+              backgroundColor: 'transparent',
+              borderColor: chartColors.green,
+              pointBackgroundColor: chartColors.redLight,
+              tension: 0,
+              fill: false
+            }, {
+              yAxisID: 'fecha',
+              backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+              borderColor: 'transparent'
+            }]
+          },
+          plugins: [ChartDataSource],
+          options: {
+            title: {
+              display: true,
+              text: 'Casos de Coronavirus'
+            },
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Fecha desde Caso Uno'
+                }
+              }],
+              yAxes: [{
+                id: 'casos',
+                gridLines: {
+                  drawOnChartArea: false
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Numero de Casos'
+                }
+              }]
+            },
+            plugins: {
+              datasource: {
+                type: 'csv',
+                url: "{{ url_for('static', filename='/datasets/casosRecuperados.csv') }}",
+                delimiter: ',',
+                rowMapping: 'dataset',
+                datasetLabels: true,
+                indexLabels: true
+              }
+            }
+          }
+        };
+
+        var configFallecidos = {
+          type: 'line',
+          data: {
+          datasets: [{
+              type: 'line',
+              yAxisID: 'casos',
+              backgroundColor: 'transparent',
+              borderColor: chartColors.red,
+              pointBackgroundColor: chartColors.black,
+              tension: 0,
+              fill: false
+            }, {
+              yAxisID: 'fecha',
+              backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+              borderColor: 'transparent'
+            }]
+          },
+          plugins: [ChartDataSource],
+          options: {
+            title: {
+              display: true,
+              text: 'Casos de Coronavirus'
+            },
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Fecha desde Caso Uno'
+                }
+              }],
+              yAxes: [{
+                id: 'casos',
+                gridLines: {
+                  drawOnChartArea: false
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Numero de Casos'
+                }
+              }]
+            },
+            plugins: {
+              datasource: {
+                type: 'csv',
+                url: "{{ url_for('static', filename='/datasets/casosMuertos.csv') }}",
+                delimiter: ',',
+                rowMapping: 'dataset',
+                datasetLabels: true,
+                indexLabels: true
+              }
+            }
+          }
+        };
+
+
+        window.onload = function() {
+          var ctx = document.getElementById('casos').getContext('2d');
+          window.myChart1 = new Chart(ctx, configCasos);
+
+          var ctx2 = document.getElementById('recuperados').getContext('2d');
+          window.myChart2 = new Chart(ctx2, configRecuperados);
+
+          var ctx3 = document.getElementById('fallecidos').getContext('2d');
+          window.myChart3= new Chart(ctx3, configFallecidos);
+        };
+    </script>
+    
+    <div class="container">
+      <hr>
+      <h1 class="h1">Casos Infectados</h1>
+      <canvas id="casos"></canvas>
+      <hr>
+      <h1 class="h1">Casos Recuperados</h1>
+      <canvas id="recuperados" ></canvas>
+      <hr>
+      <h1 class="h1">Casos Fallecidos</h1>
+      <canvas id="fallecidos" ></canvas>      
+      <button class="btn btn-primary" onclick="alert('No funciona :( ...\n por el momento ;)')">Actualizar Graficas</button><br>
+      <hr>
+    </div>
+
+    <!-- Calendario -->
+    <div class="container">
+      <br>
+    <h1 class="alert alert-success h2" role="alert">Prediccion de Casos de Coronavirus</h1>
+    <div id="userInput">
+      <label for="start"><caption>Seleccionar Fecha</caption></label>
+      <input class="form-control input-group date" id="textInput" type="date" name="msg" min="2020-03-14" id="start">
+      <input id="buttonInput" class="btn btn-primary btn-lg" type="submit" value="Calcular" name="msg">
+    </div>
+    </div>
+    <
+    <div class="container">
+      
+      <div id="chatbox">
+        <hr>
+        <h1 class="h1">Resultado</h1>
+        <p class="botText">          
+        </p>
+      </div>
+    </div>
+    <br>
+
+    <nav class="navbar static-bottom navbar-expand-sm navbar navbar-dark bg-dark" >
+      <a class="navbar-brand" href="#"><strong>UMG 2020</strong></a>
+    </nav>     
+    <script src="{{ url_for('static', filename='/js/js.js') }}"></script>
+    
+    </div>
+  </body>
+</html>

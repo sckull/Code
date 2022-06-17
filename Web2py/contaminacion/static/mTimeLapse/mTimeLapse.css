@@ -1,0 +1,53 @@
+
+
+input {
+	
+	padding:4px 12px;
+	margin:4px;
+	width:100px;	
+	border:0px;
+
+	color: #fff;
+	background-color: #41B54A;
+	border-color: #41B54A;
+	border-radius: 25px;
+}
+
+input:hover {
+	cursor: pointer;
+	color:white;
+}
+
+#frames {
+  width:98%;
+  margin: auto !important;
+}
+
+#frame_front,
+#frame_back {
+	position: absolute;
+	/*top:10px;*/
+	left:10px;
+	width:98%;
+	margin: auto !important;  
+}
+
+#controls {
+	width:98%;
+	position: unset;	
+	/*bottom: 100px;*/
+	left:10px;
+	color:slategray;
+	margin:10px auto;
+}
+
+#data_stamp {
+  font-family: monospace;
+  color: white;
+  text-shadow: 2px 2px black;
+}
+
+#mTimeLapse {
+	display: none;
+}
+

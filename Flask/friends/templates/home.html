@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<section id="live-feed">
+    <div class="container wrapper">
+      <h1 class="section-title slideDown appear">Find Friends</h1>
+      <!--<ul class="online-users list-inline slideUp appear">
+        <li>
+          <a href="#" title="Alexis Clark">
+            <img src="images/users/user-5.jpg" alt="" class="img-responsive profile-photo">
+            <span class="online-dot"></span>
+          </a>
+        </li>
+        <li><a href="#" title="James Carter"><img src="images/users/user-6.jpg" alt="" class="img-responsive profile-photo"><span class="online-dot"></span></a></li>
+        <li><a href="#" title="Robert Cook"><img src="images/users/user-7.jpg" alt="" class="img-responsive profile-photo"><span class="online-dot"></span></a></li>
+        <li><a href="#" title="Richard Bell"><img src="images/users/user-8.jpg" alt="" class="img-responsive profile-photo"><span class="online-dot"></span></a></li>
+        <li><a href="#" title="Anna Young"><img src="images/users/user-9.jpg" alt="" class="img-responsive profile-photo"><span class="online-dot"></span></a></li>
+        <li><a href="#" title="Julia Cox"><img src="images/users/user-10.jpg" alt="" class="img-responsive profile-photo"><span class="online-dot"></span></a></li>
+      </ul>-->
+      <h2 class="sub-title">See Who is active</h2>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-md-offset-4">
+
+          
+        {%for u in users:%}
+          {% if u.id != user.id:%}
+            <div class="feed-item">
+              <a href="{{url_for('user',id=u.id)}}" title="{{u.name}} {{u.lastname}}">
+                <img src="{{ u.avatar(64)}}" alt="user" class="img-responsive profile-photo-sm">
+                <span class="online-dot"></span>
+              </a>
+              <div class="live-activity">
+                <p><a href="{{url_for('user',id=u.id)}}" class="profile-link">{{u.name}} {{u.lastname}}</a> Published a post</p>
+                <p class="text-muted">1 min ago</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+        
+
+          
+
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}

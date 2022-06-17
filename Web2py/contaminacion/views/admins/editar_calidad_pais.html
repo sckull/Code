@@ -1,0 +1,22 @@
+{{ extend 'admin_layout.html'}}
+
+{{block mysidebar}}
+    <h1 class="mt-4">Calidad Pais</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><strong>{{=titulo['nombre'] if pais_calidad else "Alerta"}}</strong></li>
+    </ol>
+{{end}}
+
+<div class="container-fluid">        
+    <div class="card mb-4">
+        <div class="container">
+            <br>
+            {{=form}}
+            <hr>
+            <div class="center">
+                <a href="{{=URL('calidad_pais')}}" class="btn btn-success">Regresar</a><br>
+            </div> 
+            <br>            
+        </div>
+    </div>
+</div>

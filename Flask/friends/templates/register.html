@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="col-md-6 text-center">
+  <div class="col-md-offset-9 col-md-6 text-center">
+    <form class="form-signin" method=post>
+      <img class="mb-4" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/People_icon_dead.svg/1024px-People_icon_dead.svg.png" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Register Here</h1>
+      
+      <label for="inputuser" class="sr-only">Username</label>
+      <input type="text" name=username  value="{{ request.form.username }}" id="inputuser" class="form-control" placeholder="Username" required autofocus>
+
+      <label for="inputname" class="sr-only">Name</label>
+      <input type="text" name=name value="{{ request.form.password }}" id="inputname" class="form-control" placeholder="Name" required>
+
+      <label for="inputlastname" class="sr-only">Lastname</label>
+      <input type="text" name=lastname value="{{ request.form.lastname }}" id="inputlastname" class="form-control" placeholder="LastName" required>
+
+      <label for="inputemail" class="sr-only">Email</label>
+      <input type="email" name=email value="{{ request.form.email }}" id="inputemail" class="form-control" placeholder="Email" required>
+
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" name=password value="{{ request.form.password }}" id="inputPassword" class="form-control" placeholder="Password" required>
+
+      <label for="inputabout" class="sr-only">About</label>
+      <textarea name="info" rows="1" cols="410" class="form-control" placeholder="About you ..."></textarea>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      <a href="{{ url_for('login') }}" class="btn btn-lg btn-primary btn-block">Login</a>
+
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+

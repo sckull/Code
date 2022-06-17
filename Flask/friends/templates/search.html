@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if keyword:%}
+    <h1>Results for: {{keyword}}</h1>
+    
+{% else:%}
+    <div class="col-md-8 text-center">
+        <hr>
+        <div class="col-md-offset-6 col-md-6 text-center">
+            <form class="form-signin" method=post>
+                <h1 class="h3 mb-3 font-weight-normal">Search</h1>
+                
+                <label for="key" class="sr-only">Keyword</label>
+                <input type="text" name=keyword  value="{{ request.form.keyword }}" id="key" class="form-control" placeholder="Keyword" required autofocus>
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+
+{% if users | length != 0: %}
+    <h3>Users found</h3>
+    {% for u in users:%}
+    <p> 
+        <a href="{{url_for('user',id=u.id)}}">{{u.name}} {{u.lastname}}</a>
+    </p>
+    {% endfor %}
+    <hr>
+{% endif %}
+<hr>
+
+
+{% if posts | length != 0: %}
+    <h3>Posts found</h3>
+    {% for u in posts:%}
+    <p>{{u.body}}</p> by <a href="{{url_for('user',id=u.author.id)}}">{{u.author.name}}</a>
+    <hr>
+    {% endfor %}
+{% endif %}
+
+
+
+
+{%endblock%}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="theme-color" content="#51bff2">
+
+  <title>{{=response.title_data}}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{=URL('static','data/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{=URL('static','data/css/simple-sidebar.css')}}" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <script src="https://use.fontawesome.com/644b9adff2.js"></script>
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.1/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.1/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <link rel="shortcut icon" href="{{=URL('static','images/icon_data.ico')}}" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{{=URL('static','images/icon_data.png')}}">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BF0PM4MQF4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-BF0PM4MQF4');
+  </script>
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">{{=response.title_data}}</div>
+      <div class="list-group list-group-flush">
+        {{for _item in response.menu_data or []:}}
+            {{if len(_item)<4 or not _item[3]:}}
+              <a class="list-group-item list-group-item-action bg-light" href="{{=_item[2]}}">{{=_item[0]}}</a>
+            {{else:}}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{{=_item[2]}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{=_item[0]}}</a>
+                <div class="dropdown-menu">
+                  {{for _subitem in _item[3]:}}
+                      <a class="dropdown-item" href="{{=_subitem[2]}}">{{=_subitem[0]}}</a>
+                  {{pass}}
+                </div>
+              </li>
+            {{pass}}
+       {{pass}}
+       <a class="list-group-item list-group-item-action bg-light" href="{{=URL('contaminacion','index')}}">Regresar</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">       
+        <button class="btn " id="menu-toggle"> <i class="fa fa-align-left" aria-hidden="true"></i></button>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="container">
+          {{include}}
+          {{=response.toolbar() if response.show_toolbar else ''}}
+        </div>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{=URL('static','data/vendor/jquery/jquery.min.js')}} "></script>
+  <script src="{{=URL('static','data/vendor/bootstrap/js/bootstrap.bundle.min.js')}} "></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>

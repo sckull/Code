@@ -1,0 +1,46 @@
+{{extend 'administracion/login.html'}}
+
+{{block title}}
+  {{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}
+{{end}}
+
+<main>
+  <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-lg-7">
+              <div class="card shadow-lg border-0 rounded-lg mt-5">
+                  <div class="card-header"><h3 class="text-center font-weight-light my-4">{{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}</h3></div>
+                  <div class="card-body">
+                     {{=form}}
+                  </div>
+                  <div class="card-footer text-center">
+                    {{if request.args(0)=='login' and not 'register' in auth.settings.actions_disabled:}}
+                      <div class="small"><a href="{{=URL('user/register')}}">{{=T('Register')}}</a></div>
+                    {{pass}}
+                    {{if request.args(0)=='login' and not 'retrieve_password' in auth.settings.actions_disabled:}}
+                      <div class="small"><a href="{{=URL('user/retrieve_password')}}">{{=T('Lost your password?')}}</a></div>
+                    {{pass}}
+                    {{if request.args(0)=='register':}}
+                      <div class="small"><a href="{{=URL('user/login')}}">{{=T('Login')}}</a></div>
+                    {{pass}}
+
+                    {{if not request.args:}}
+                      <div class="small"><a href="{{=URL('user/login')}}">{{=T('foo')}}</a></div>
+                    {{pass}}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</main>
+
+{{block page_js}}
+<script>
+    jQuery("#web2py_user_form input:visible:enabled:first").focus();
+{{if request.args(0)=='register':}}
+    web2py_validate_entropy(jQuery('#auth_user_password'),100);
+{{elif request.args(0)=='change_password':}}
+    web2py_validate_entropy(jQuery('#no_table_new_password'),100);
+{{pass}}
+</script>
+{{end page_js}}

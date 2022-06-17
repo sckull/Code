@@ -1,0 +1,69 @@
+{{ extend 'admin_layout.html'}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+
+{{block mysidebar}}
+    <h1 class="mt-4">Tipo Contenido</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Tipo Contenido</li>
+    </ol>
+{{end}}
+
+<div class="container-fluid">        
+  <div class="card mb-4">
+      <div class="card-header">
+          <td class="bg-dark center"><a href="editar_tipo_contenido" class="btn btn-success"><i class="fa fa-plus-square-o" ></i> Nuevo</a></td>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                      <tr>
+                          <!-- HEAD TITLE -->
+                          <th>Nombre</th>                          
+                          <th>Accion</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                          <!-- FOOT TITLE -->
+                          <th>Nombre</th>
+                          <th>Accion</th>
+                      </tr>
+                  </tfoot>
+                  <tbody>
+                    {{for p in contenidos:}}
+                        <tr style="align-text: center !important;">
+                          <td>{{=p.nombre}}</td>
+                          
+                          <td>
+                            <button type="button" class="btn btn-primary btn-block " id="dropdownMenuIconButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Accion
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton7" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 35px, 0px);">
+                              <a class="dropdown-item" href="editar_tipo_contenido?tipo_contenido={{=p.id}}">Editar</a>
+                              <a class="dropdown-item" href="eliminar_tipo_contenido?tipo_contenido={{=p.id}}">Eliminar</a>
+                            </div>
+                          </td>
+                          
+                        </tr>
+                      {{pass}}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+  
+
+<script>
+  $(document).ready(function() {
+      var table = $('#dataTable').DataTable( {
+          rowReorder: {
+              selector: 'td:nth-child(2)'
+          },
+          responsive: true
+      } );
+  } );
+  </script>

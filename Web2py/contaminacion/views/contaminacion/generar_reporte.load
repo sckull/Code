@@ -1,0 +1,101 @@
+<style>
+.styled-select select {
+    -moz-appearance:none !important; /* Firefox */
+    -webkit-appearance:none !important; /* Safari and Chrome */
+    appearance:none !important;
+}
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="dropdown">
+
+                <Select id="paises" class="btn btn-success dropdown-primary styled-select">
+                    <option value="hehe">Selecciona un Pais</option>
+                    {{for i in paises:}}
+                        <option value="{{=i.id}}" class="dropdown-item">{{=i.nombre}}</option>
+                    {{pass}}
+                </Select>
+            
+                <div>
+                    {{for i in paises:}}
+                        <div id="{{=i.id}}" class="pais" style="display:none"> Pais Seleccionado: {{=i.nombre}} </div>
+                    {{pass}}
+                </div>
+            
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="dropdown">
+                <br>
+                <Select id="fechas" class="btn btn-success dropdown-primary styled-select">
+                    <option value="hehe">Selecciona un Año</option>
+                    {{for i in fechas:}}
+                        <option value="{{=i}}" class="dropdown-item">{{=i}}</option>
+                    {{pass}}
+                </Select>
+            
+                <div>
+                    {{for i in fechas:}}
+                        <div id="{{=i}}" class="fecha" style="display:none"> Año Seleccionado: {{=i}} </div>
+                    {{pass}}
+                </div>
+            
+            </div>
+        </div>
+        <div class="col-12">
+            <br>
+            <button type="button" class="btn btn-info" id="rep" onclick="reporte()">Generar Reporte</button>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-12">
+            <br>
+            <p class="text-center" id='resultado'></p>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    fecha = ''
+    pais = ''
+
+    $(function() {
+        $('#paises').change(function(){
+            $('.pais').hide();
+            $('#' + $(this).val()).show();
+
+            pais = $(this).val()
+            //console.log($(this).val())
+        });
+
+        $('#fechas').change(function(){
+            $('.fecha').hide();
+            $('#' + $(this).val()).show();
+            
+            fecha = $(this).val()
+            //console.log($(this).val())
+        });
+    });
+
+    function reporte(){
+        if(fecha){
+            if(pais && fecha){
+                document.getElementById('resultado').innerHTML = '<strong> Generando reporte...</strong>'
+                location.href = "{{=URL('contaminacion','report')}}" + '?pais_id='+pais+'&ano='+fecha;
+                document.getElementById('resultado').innerHTML = 'El reporte incluye ultimos registros.'
+            }else{
+                document.getElementById('resultado').innerHTML = '<strong> Pais no seleccionado.</strong>'
+            }
+        }else{
+            document.getElementById('resultado').innerHTML = '<strong> Valores no seleccionados.</strong>'
+        }
+    }
+</script>
+
+

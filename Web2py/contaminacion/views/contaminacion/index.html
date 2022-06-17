@@ -1,0 +1,55 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h2>Contaminacion</h2>    
+  </div>
+</div>
+{{end}}
+
+<style>
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 text-center">      
+      <div>
+          {{for c in contenido:}}
+            <h2>
+              {{=XML(c.titulo)}}
+            </h2>
+            <div class="container-fluid">
+              {{=XML(c.contenido)}}
+            </div>
+              {{if c.imagen_con:}}
+                <img src="{{=c.imagen_con}}" width="50%" height="50%">
+              {{pass}}
+              <hr>
+          {{pass}}
+      </div>
+    </div>
+
+    <div class="col-md-3 text-center">      
+      <div class="list-group">
+        <strong class="list-group-item list-group-item-action active">Contaminacion</strong>
+        {{ for p in paises:}}        
+          <a href="{{ =URL('contaminacion','country', vars=dict(pais=p.id)) }}" class="list-group-item list-group-item-action">{{=p.nombre}}</a>
+        {{pass}}
+        <strong class="list-group-item list-group-item-action active">Tipos de Contaminación</strong>
+        <strong><a href="{{ =URL('contaminacion','centroamerica') }}" class="list-group-item list-group-item-action">Centro America</a></strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--
+<a href="{{ =URL('contaminacion','atmosferica') }}" class="list-group-item list-group-item-action">Atmosférica</a>
+<a href="{{ =URL('contaminacion','luminica') }}" class="list-group-item list-group-item-action">Lumínica</a>   
+-->

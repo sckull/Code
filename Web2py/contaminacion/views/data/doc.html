@@ -1,0 +1,32 @@
+{{extend 'data_layout.html'}}
+
+
+<link rel="stylesheet" href="{{=URL('static','prism/prism.css')}}">
+<script src="{{=URL('static','prism/prism.js')}}"></script>
+
+<style>
+  td{
+    padding:2.5%;
+  }
+</style>
+
+<!--<h1 class="mt-4">API - Informacion</h1>-->
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-9">      
+        <div>
+            {{for c in contenido:}}
+            <hr>
+              <h2 class="mt-4">
+                {{=XML(c.titulo)}}
+              </h2>
+              <div class="container-fluid">
+                {{=XML(c.contenido)}}
+              </div>
+              <br><br>
+            {{pass}}
+        </div>
+    </div>
+</div>
+<br><br>

@@ -1,0 +1,89 @@
+{{extend 'layout.html'}}
+
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://www.chartjs.org/samples/master/utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>-->
+
+
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h2>Contaminacion</h2>
+    <h3>Centro America</h3>
+  </div>
+</div>
+{{end}}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 text-center">
+      
+      <div>
+        <h2>¿Qué es la Contaminacion Luminica?</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto repellendus eligendi nobis aliquam distinctio delectus quod cupiditate officia modi nihil a consectetur temporibus ea possimus, voluptatum similique ut? Necessitatibus, possimus.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores sit neque doloremque temporibus? Veniam distinctio deleniti fugit temporibus amet ullam in officiis, dolores maxime sapiente atque sed repudiandae esse facere?
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil hic odio reiciendis consequuntur odit nisi modi doloribus sit voluptatibus, amet natus non veniam in tempore. Dicta quas vel quisquam! Sapiente!
+        </p>
+      </div>
+
+    </div>
+
+    <div class="col-md-6 text-center">
+      
+      <div class="list-group">
+        <strong class="list-group-item list-group-item-action active">Paises</strong>
+        
+        <a href="#" class="list-group-item list-group-item-action"></a>
+        
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+<script src="https://pbabik.github.io/webraster/lib/plotty.min.js"></script>
+<script src="https://raw.githubusercontent.com/santilland/plotty/master/dist/plotty.min.js.map"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/geotiff"></script>
+
+<canvas id="plot"></canvas>
+<script>
+  (async function() {
+    const tiff = await GeoTIFF.fromUrl('https://s3.amazonaws.com/geotiff.io/eu_pasture.tif');
+    const image = await tiff.getImage();
+    const data = await image.readRasters();
+
+    const plot = new plotty.plot({
+      canvas:document.getElementById("plot"),
+      data: data[0],
+      width: image.getWidth(),
+      height: image.getHeight(),
+      domain: [0, 256],
+      colorScale: "viridis"
+    });
+    plot.render();
+  })();
+  console.log(GeoTIFF);
+</script>
+
+<script>
+  /*new Vue({
+    delimiters: ['${', '}']
+    template: '<div>${ hi }</div>'
+  })*/
+  
+  //const response = await fetch('https://s3.amazonaws.com/geotiff.io/eu_pasture.tif');
+  
+
+
+  
+</script>
+
+

@@ -1,0 +1,54 @@
+{{extend 'layout.html'}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://www.chartjs.org/samples/master/utils.js"></script>
+
+<!--
+  PDF: 
+-->
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h2>Contaminacion</h2>
+    <h3>Centro America</h3>
+  </div>
+</div>
+{{end}}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 text-center">
+      
+      <div>
+        <h2>¿Qué es la Contaminacion Atmosferica?</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto repellendus eligendi nobis aliquam distinctio delectus quod cupiditate officia modi nihil a consectetur temporibus ea possimus, voluptatum similique ut? Necessitatibus, possimus.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores sit neque doloremque temporibus? Veniam distinctio deleniti fugit temporibus amet ullam in officiis, dolores maxime sapiente atque sed repudiandae esse facere?
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil hic odio reiciendis consequuntur odit nisi modi doloribus sit voluptatibus, amet natus non veniam in tempore. Dicta quas vel quisquam! Sapiente!
+        </p>
+      </div>
+
+    </div>
+
+    <div class="col-md-6 text-center">
+      <div class="list-group">
+        <strong class="list-group-item list-group-item-action active">Paises</strong>
+        <span>
+          {{ for p in pais:}}        
+            <a href="{{ =URL('contaminacion','country', vars=dict(pais=p.id)) }}" class="list-group-item list-group-item-action">{{=p.nombre}}</a>
+          {{pass}}
+        </span>
+        <br>
+      </div>
+      <br>  
+      <div clas="container">
+        <h5>Toneladas de CO2 per Capita</h5>
+        {{#=LOAD('contaminacion', 'ca_atmosferica.load')}}
+      </div>
+    </div>
+
+  </div>
+</div>

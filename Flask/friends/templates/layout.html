@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="This is social network html5 template available in themeforest......" />
+		<meta name="keywords" content="Social Network, Social Media, Make Friends, Newsfeed, Profile Page" />
+		<meta name="robots" content="index, follow" />
+		<title>Friends</title>
+
+    <!-- Stylesheets
+    ================================================= -->
+    
+		<link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/ionicons.min.css') }} " />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/font-awesome.min.css') }}" />
+    <link href="{{ url_for('static', filename='/css/emoji.css') }}" rel="stylesheet">
+    <!--Google Webfont-->
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,300italic,400italic,500,500italic,600,600italic,700' rel='stylesheet' type='text/css'>
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='/images/fav.png') }}"/>
+    <style>
+      .jumbotron {background-color: #f9f9f9 !important;}
+      body{font-size: 15px;}
+    </style>
+	</head>
+  <body>
+    <!-- Header
+    ================================================= -->
+		<header id="header">
+      <nav class="navbar navbar-default navbar-fixed-top menu">
+        <div class="container">
+
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            {% if session.logged_in == True: %}
+              <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='/images/logo.png') }}" alt="logo" /></a>
+            {% else: %}
+              <a class="navbar-brand" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='/images/logo.png') }}" alt="logo" /></a>
+            {% endif %}
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right main-menu">              
+              {% if session.logged_in == True: %}
+              <li class="dropdown"><a href="{{ url_for('home') }}">Home</a></li>
+                {%if user.is_admin():%}
+                  <li class="dropdown"><a href="{{ url_for('users') }}">Users</a></li>
+                  <li class="dropdown"><a href="{{ url_for('admins') }}">Admins</a></li>
+                {% endif%}
+                  <li class="dropdown"><a href="{{ url_for('search') }}">Search</a></li>                
+                  <li class="dropdown"><a href="{{ url_for('post') }}">{{user.name}} {{user.lastname}}</a></li>                
+                  <li class="dropdown"><a href="{{ url_for('logout') }}">Logout</a></li>
+              {% else: %}
+                <li class="dropdown"><a href="{{ url_for('login') }}">Login</a></li>
+                <li class="dropdown"><a href="{{ url_for('register') }}">Register</a></li>
+              {% endif %}
+            </ul>
+            <!--
+            {% if session.logged_in == True: %}
+              {% if user.is_admin(): %}
+              <form class="navbar-form navbar-right hidden-sm" method="POST">
+                <div class="form-group">
+                  <i class="icon ion-android-search"></i>
+                  <input type="text" class="form-control" name="a" placeholder="Search friends, photos, videos">
+                </div>
+              </form>
+              {% endif %}
+            {% endif %}
+            -->
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+      </nav>
+    </header>
+    <!--Header End-->
+
+    <div id="page-contents">
+    	<div class="container">
+    		<div class="row">
+    			<div class="col-md-7">
+            <div>
+              
+              {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissable" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                      </button>
+                      {{message}}
+                    </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+            </div>
+            <div class="container">
+              {% block body %}{% endblock %}  
+            </div>
+            
+          </div>
+
+          <!-- Newsfeed Common Side Bar Right
+          ================================================= -->
+    			
+    		</div>
+    	</div>
+    </div>
+    
+    <!-- Footer
+    ================================================= -->
+    <footer id="footer">
+      <div class="container">
+      	<div class="row">
+          <div class="footer-wrapper">
+
+            <div class="col-md-3 col-sm-3 col-md-offset-5">
+              <a href=""><img src="{{ url_for('static', filename='/images/logo-black.png') }}" alt="" class="footer-logo" /></a>
+            </div>
+            
+            {% if session.logged_in == False: %}
+            <div class="col-md-2 col-sm-2">
+              <h6>For individuals</h6>
+              <ul class="footer-links">
+                <li><a href="">Register</a></li>
+                <li><a href="">Login</a></li>
+                <li><a href="">Find Friends</a></li>                
+              </ul>
+            </div>
+            {% endif %}
+            
+          </div>
+      	</div>
+      </div>
+      <div class="copyright">
+        <p>Friends - 2021</p>
+        <credit>Theme: <a href="https://themes.emmotivity.com/2016/11/friend-finder-social-network-html5.html">emmotivity</a></credit>        
+      </div>
+		</footer>
+    
+    <!--preloader-->
+    <div id="spinner-wrapper">
+      <div class="spinner"></div>
+    </div>
+    
+    <!-- Scripts
+    ================================================= -->
+    <script src="{{ url_for('static', filename='/js/jquery.sticky-kit.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/jquery.scrollbar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/script.js') }}"></script>
+</html>

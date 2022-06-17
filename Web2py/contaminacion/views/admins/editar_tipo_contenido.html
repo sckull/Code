@@ -1,0 +1,22 @@
+{{ extend 'admin_layout.html'}}
+
+{{block mysidebar}}
+    <h1 class="mt-4">Tipo Contenido</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><strong>{{=titulo.nombre if titulo else "Tipo Contenido"}}</strong></li>
+    </ol>
+{{end}}
+
+<div class="container-fluid">        
+    <div class="card mb-4">
+        <div class="container">
+            <br>
+            {{=form}}
+            <hr>
+            <div class="center">
+                <a href="{{=URL('tipo_contenido')}}" class="btn btn-success">Regresar</a><br>
+            </div> 
+            <br>            
+        </div>
+    </div>
+</div>

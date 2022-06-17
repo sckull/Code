@@ -1,0 +1,279 @@
+{{extend 'layout.html'}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<!--<script src="https://www.chartjs.org/samples/master/utils.js"></script>-->
+<!--<script src="https://raw.githubusercontent.com/chartjs/Chart.js/master/docs/scripts/utils.js"></script>-->
+<script src="{{ =URL('static','js/utils.js') }}"></script>
+
+<!--Chart.jsRangeslider-->
+<script type="text/javascript" src="https://gitcdn.link/cdn/schme16/Chart.js-RangeSlider/2dc49a0980ca04ca2690bc5f1c9e3644e4207b5a/dist/RangeSlider-all.min.js"></script>
+
+<!-- From https://github.com/schme16/Chart.js-RangeSlider-->
+<script src="{{=URL('static','chartjs-rangeslider/RangeSlider-all.min.js')}}"></script>
+
+<link rel="stylesheet" href="{{=URL('static','nouislider/nouislider.css')}}">
+<script src="{{=URL('static','nouislider/nouislider.js')}}"></script>
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">        
+        <h2>Contaminacion</h2>
+        <h2>{{#=nombre['nombre']}}</h2>
+        <h4>Informacion del Banco Mundial</h4>
+  </div>
+</div>
+{{end}}
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12 text-center">
+          <div class="container">
+              <a class="btn btn-primary float-left" href="{{=URL('contaminacion','index')}}" role="button">Regresar</a>            
+          </div>
+      </div>
+    </div>  
+</div>
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 ">          
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
+                Ayuda          
+                <svg width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-question-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"></path>
+                </svg>
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Conceptos</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                        {{for c in conceptos:}}
+                            <h6>{{=c.titulo}}</h6>
+                            <p>{{=c.descripcion}}</p>
+                            <hr>
+                        {{pass}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+      <div class="col-md-8 ">
+
+        {{for c in contaminacion:}}
+            <div id='canvas-charts'>
+                <h3>{{=c}}</h3>   
+                <h5>{{=contaminacion[c]['descripcion']}}</h5>
+                <canvas id="chacha-{{=c.replace(" ", "")}}"></canvas>
+                <br>
+                <div class="float-right">
+                    <a id="chachabt-{{=c.replace(" ", "")}}-jpg"
+                    download="Grafica.jpg"
+                    href=""
+                    class="btn btn-primary bg-flat-color-1 float-right"
+                    title="Descargar JPG"
+                    style="margin-left: 0.2rem ">  
+                    <!-- Download Icon -->
+                        <i class="fa fa-download"></i>
+                    </a>
+                    <a id="chachabt-{{=c.replace(" ", "")}}-png"
+                        download="Grafica.png"
+                        href=""
+                        class="btn btn-primary bg-flat-color-1 float-right"
+                        title="Descargar PNG">  
+                        <!-- Download Icon -->
+                        <i class="fa fa-download"></i>
+                    </a>
+                    <a id="chachabt-{{=c.replace(" ", "")}}-svg"
+                        download="Grafica.svg"
+                        href=""
+                        class="btn btn-primary bg-flat-color-1 float-right"
+                        title="Descargar SVG"
+                        style="margin-right: 0.2rem;">  
+                        <!-- Download Icon -->
+                        <i class="fa fa-download"></i>
+                    </a>
+                </div>
+                <br>
+            </div>
+        {{pass}}       
+  
+      </div>
+    </div>
+  </div>
+  
+
+<script>
+    {{for c in contaminacion:}}
+    // line chart data
+    var iniData{{=c.replace(" ", "")}} = {
+        labels:{{=XML(contaminacion[c]['fecha'])}},
+        datasets:[{
+            label: "{{=c}} - {{=nombre_pais}}",
+            fillColor:"rgba(172,194,132,0)",
+            strokeColor:"#C45662",
+            pointColor:"#C45662",
+            pointStrokeColor:"#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "#C45662",
+            /*You only put numeric data here*/
+            data:{{=XML(contaminacion[c]['valor'])}},
+            backgroundColor: "rgba(75, 192, 192, 0.7)",
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderDash: [1, 0],
+            pointRadius: 3,
+            pointBackgroundColor: "rgb(255,255,255)",
+            pointHoverRadius: 12,
+            borderWidth: 1
+        }]
+    },
+    // create the options
+    options{{=c.replace(" ", "")}} = {
+        scaleBeginAtZero: true,
+        /*This is how to customize the way the labels look :) */
+        tooltipTemplate: "<%if (label){%><%=label%>: <%}%>$<%= value %>",
+        label: '{{=c.replace(" ", "")}}',
+        responsive: true,
+        scales: {
+        xAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }   
+        }]
+    }   
+    },
+    // get line chart canvas    
+    ini{{=c.replace(" ", "")}} = document.getElementById('chacha-{{=c.replace(" ", "")}}').getContext('2d')
+    rs{{=c.replace(" ", "")}} = new RangeSliderChart({
+        chartData: iniData{{=c.replace(" ", "")}},
+        chartOpts: options{{=c.replace(" ", "")}},
+        chartType: 'Pie',
+        chartCTX: ini{{=c.replace(" ", "")}},
+        //class: 'my-chart-ranger',
+        initial: [0, {{ =XML( len(contaminacion[c]['fecha'])/6 ) }}]
+    })
+
+    document.getElementById("chachabt-{{=c.replace(" ", "")}}-jpg").addEventListener('click', function(){
+        var url_base64jpg = document.getElementById("chacha-{{=c.replace(" ", "")}}").toDataURL("image/jpeg");
+        var a =  document.getElementById("chachabt-{{=c.replace(" ", "")}}-jpg");
+        a.href = url_base64jpg;
+    });
+    document.getElementById("chachabt-{{=c.replace(" ", "")}}-png").addEventListener('click', function(){
+        var url_base64jp = document.getElementById("chacha-{{=c.replace(" ", "")}}").toDataURL("image/png");
+        var a =  document.getElementById("chachabt-{{=c.replace(" ", "")}}-png");
+        a.href = url_base64jp;
+    });
+    document.getElementById("chachabt-{{=c.replace(" ", "")}}-svg").addEventListener('click', function(){
+        var url_base64jp = document.getElementById("chacha-{{=c.replace(" ", "")}}").toDataURL("image/svg+xml");
+        var a =  document.getElementById("chachabt-{{=c.replace(" ", "")}}-svg");
+        a.href = url_base64jp;
+    });
+
+    {{pass}}
+
+    
+</script>
+    
+<script>
+ /*
+    {{i = 100}}
+    n = {
+    {{for c in contaminacion:}}
+        '{{=c}}':{{=i}},
+        {{i=i+10}}
+    {{pass}}
+    }
+    var iniDataCompa = {
+        labels:['1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008','2009','2010'],
+        datasets:[        
+            {{for c in contaminacion:}}
+                {{ if c != 'NO':}}
+                {
+                    label: "{{=c}}",
+                    fillColor:"rgba(172,194,132,0)",
+                    strokeColor:"#C45662",
+                    pointColor:"#C45662",
+                    pointStrokeColor:"#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "#C45662",
+                    data:{{=XML(contaminacion[c]['valor'])}},
+                    backgroundColor: "rgba(75, 192, "+n['{{=c}}']+", 0.7)",
+                    borderColor: window.chartColors.green,
+                    borderDash: [1, 0],
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgb(255,255,255)",
+                    pointHoverRadius: 12,
+                    borderWidth: 1
+
+                },
+                {{pass}}
+            {{pass}}
+        ],
+    },
+
+    optionsCompa = {
+        scaleBeginAtZero: true,
+        tooltipTemplate: "<%if (label){%><%=label%>: <%}%>$<%= value %>",
+        label: 'Comparativa',
+        responsive: true,
+        scales: {
+        xAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }   
+        }]
+		}
+    },
+    
+    ini = document.getElementById('comparativa').getContext('2d')
+
+    rs = new RangeSliderChart({
+
+        chartData: iniDataCompa,
+        chartOpts: optionsCompa,
+        chartType: 'line',
+        chartCTX: ini,
+
+        //class: 'my-chart-ranger',
+
+        initial: [0, 2]
+    })*/
+    
+    
+
+    
+</script>

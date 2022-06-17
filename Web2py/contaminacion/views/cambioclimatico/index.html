@@ -1,0 +1,51 @@
+{{extend 'layout.html'}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://www.chartjs.org/samples/master/utils.js"></script>
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h2>Cambio Climatico</h2>
+    <h3>Centro America</h3>
+  </div>
+</div>
+{{end}}
+
+
+<style>
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 text-center">      
+      <div>
+          {{for c in contenido:}}
+            <h2>
+              {{=XML(c.titulo)}}
+            </h2>
+            <div class="container-fluid">
+              {{=XML(c.contenido)}}
+            </div>
+              {{if c.imagen_con:}}
+                <img src="{{=c.imagen_con}}" width="50%" height="50%">
+              {{pass}}
+              <hr>
+          {{pass}}
+      </div>
+    </div>
+
+    <div class="col-md-3 text-center">      
+      <div class="list-group">
+        <strong class="list-group-item list-group-item-action active">Paises</strong>
+        {{ for p in paises:}}
+        <a href="{{ =URL('country', vars=dict(pais=p['id'])) }}" class="list-group-item list-group-item-action">{{=p["nombre"]}}</a>
+        {{pass}}
+      </div>
+    </div>
+  </div>
+</div>

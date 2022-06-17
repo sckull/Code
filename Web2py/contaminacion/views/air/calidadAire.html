@@ -1,0 +1,55 @@
+{{extend 'layout.html'}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://www.chartjs.org/samples/master/utils.js"></script>
+
+<script src="{{=URL('static','prism/prism.js')}}"></script>
+<link rel="stylesheet" href="{{=URL('static','prism/prism.css')}}">
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color:#eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h2>Calidad del Aire</h2>
+    <h3>Centro America</h3>
+  </div>
+</div>
+{{end}}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 text-center">
+      
+      <div>        
+          {{for c in contenido:}}          
+          <h2>{{=c.titulo}}</h2>
+            <p>
+              {{=XML(c.contenido)}}
+            </p>
+            {{if c.imagen_con:}}
+              <img src="{{=c.imagen_con}}" width="50%" height="50%">
+            {{pass}}            
+            <hr>
+          {{pass}}
+        
+      </div>
+
+    </div>
+
+    <div class="col-md-3 text-center">
+      
+      <div class="list-group">
+        <strong class="list-group-item list-group-item-action active">Paises</strong>
+        {{ for p in paises:}}
+          {{if p.calidadAire.activo:}}
+            <a href="{{ =URL('country', vars=dict(pais=p.pais['nombre'])) }}" class="list-group-item list-group-item-action">{{=p.pais['nombre']}}</a>
+          {{pass}}
+        {{pass}}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+

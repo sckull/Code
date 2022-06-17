@@ -1,0 +1,82 @@
+{{ extend 'admin_layout.html'}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{block mysidebar}}
+    <h1 class="mt-4">Alertas</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Alertas</li>
+    </ol>
+{{end}}
+
+
+<div class="container-fluid">        
+  <div class="card mb-4">
+      <div class="card-header">
+          <td class="bg-dark center"><a href="editar_alerta" class="btn btn-success"><i class="fa fa-plus-square-o" ></i> Nuevo</a></td>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                      <tr>
+                        <!-- HEAD TITLE -->
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Rango Menor</th>
+                        <th>Rango Mayor</th>
+                        <th>Accion</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                      <tr>
+                        <!-- FOOT TITLE -->
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Rango Menor</th>
+                        <th>Rango Mayor</th>
+                        <th>Accion</th>
+                      </tr>
+                  </tfoot>
+                  <tbody>
+                    {{for p in alertas:}}
+                        <tr style="align-text: center !important;">
+                          <td>{{=p.nombre}}</td>
+                          <td>{{=p.descripcion}}</td>
+                          <td>{{=p.rango_menor}}</td>
+                          <td>{{=p.rango_mayor}}</td>
+                          <td>
+                            <button type="button" class="btn btn-primary btn-block " id="dropdownMenuIconButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Accion
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton7" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 35px, 0px);">
+                              <a class="dropdown-item" href="editar_alerta?alerta={{=p.id}}">Editar</a>
+                              <a class="dropdown-item" href="eliminar_alerta?alerta={{=p.id}}">Eliminar</a>
+                            </div>
+                          </td>
+                        </tr>
+                      {{pass}}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+  
+
+<script>
+  $(document).ready(function() {
+      var table = $('#dataTable').DataTable( {
+          rowReorder: {
+              selector: 'td:nth-child(2)'
+          },
+          responsive: true,
+          columnDefs: [ {
+                targets: 1,
+                render: function ( data, type, row ) {
+                    return data.substr( 0, 200 );
+                }
+            } ]
+      } );
+  } );
+  </script>

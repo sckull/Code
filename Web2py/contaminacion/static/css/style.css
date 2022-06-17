@@ -1,0 +1,18 @@
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255);
+}
+
+/* Style img for TinyMCE */
+img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+li:active{
+    font-weight: bold !important;
+}
+
+/* Tamaño de slider*/
+#canvas-charts > div {
+    width: 100% !important;
+}

@@ -1,0 +1,409 @@
+{{extend 'layout.html'}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://www.chartjs.org/samples/master/utils.js"></script>
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+        {{if general != "Error":}}
+        <h2>Calidad del Aire - {{=general["city"]}}</h2>
+        {{pass}}
+        {{if not general:}}
+        <h2>Calidad del Aire</h2>
+        {{pass}}
+        <h4>Informacion de ACQIN</h4>
+  </div>
+</div>
+{{end}}
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Informacion de Indice Actual</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{if 'nombre' in alerta.values():}}            
+                {{=alerta.descripcion}}
+            {{else:}}
+                {{=alerta.descripcion}}
+            {{pass}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Modal -->
+
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12 text-center">
+          <div class="container">
+              <a class="btn btn-primary float-left" href="{{=URL('air','index')}}" role="button">Regresar</a>            
+          </div>
+      </div>
+      <div class="col-md-12 ">          
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
+            Ayuda          
+            <svg width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-question-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"></path>
+            </svg>
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Conceptos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                    {{for c in conceptos:}}
+                        <h6>{{=c.titulo}}</h6>
+                        <p>{{=c.descripcion}}</p>
+                        <hr>
+                    {{pass}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <br>
+    </div>  
+</div>
+<br>
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <div class="container">
+          <div class="row">
+              <div class="col col-12">
+                <ul class="list-group">
+                    <li class="list-group-item"><h4><strong>Indice Actual</strong> {{=general["actual"]}}</h4></li>
+                    <li class="list-group-item"><h4>
+                        <strong>Calidad de Aire</strong>
+                        <a class="text-decoration-none" data-toggle="modal" data-target="#exampleModal">
+                            {{=alerta["nombre"]}}
+                            <svg width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-question-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"></path>
+                            </svg>
+                        </a>
+                    </h4>
+                    </li>
+                    <li class="list-group-item"><h5><strong>Ultima Actualizacion</strong> {{=general["last_time"]}}</h5></li>
+                    <li class="list-group-item"><h5><strong>Ciudad</strong> {{=general["city"]}}</h5></li>
+                    <li class="list-group-item"><h5><strong>Estacion</strong> {{=general["station"]}}</h5></li>                                        
+                  </ul>
+              </div>
+              
+
+          </div>
+
+      </div>
+      
+    </div>
+
+  </div>
+
+  {{if general["forecast"] != 'no':}}
+  <hr>
+  <div class="row">
+    <div class="col-12">
+
+      <h2>Pronostico de Calidad del Aire</h2>
+
+      <h3>Ozono</h3>
+      <div id='canvas-charts'style="width: 100%;">
+        <canvas id="ozono"></canvas>
+      </div>
+
+      <h3>Materia Particulada 10</h3>
+      <div style="width:100%;">
+        <canvas id="pm10"></canvas>
+      </div>
+
+      <h3>Materia Particulada 25</h3>
+      <div style="width:100%;">
+        <canvas id="pm25"></canvas>
+      </div>
+
+      <h3>Ultravioleta</h3>
+      <div style="width: 100%;">
+        <canvas id="uvi"></canvas>
+      </div>
+    </div>
+  </div>
+  {{pass}}
+
+</div>
+
+{{if general["forecast"] != 'no':}}
+{{
+  from dateutil import parser
+  #OZONO    
+    day_o3 = [ parser.parse(x["day"]).strftime("%d %A") for x in general["forecast"]["o3"]]
+    avg_o3 = [ x["avg"] for x in general["forecast"]["o3"]]
+    max_o3 = [ x["max"] for x in general["forecast"]["o3"]]
+    min_o3 = [ x["min"] for x in general["forecast"]["o3"]]
+
+    #PM10
+    day_pm10 = [ parser.parse(x["day"]).strftime("%d %A") for x in general["forecast"]["pm10"]]
+    avg_pm10 = [ x["avg"] for x in general["forecast"]["pm10"]]
+    max_pm10 = [ x["max"] for x in general["forecast"]["pm10"]]
+    min_pm10 = [ x["min"] for x in general["forecast"]["pm10"]]
+
+    #PM25
+    day_pm25 = [ parser.parse(x["day"]).strftime("%d %A") for x in general["forecast"]["pm25"]]
+    avg_pm25 = [ x["avg"] for x in general["forecast"]["pm25"]]
+    max_pm25 = [ x["max"] for x in general["forecast"]["pm25"]]
+    min_pm25 = [ x["min"] for x in general["forecast"]["pm25"]]
+
+    #UVI
+    day_uvi = [ parser.parse(x["day"]).strftime("%d %A") for x in general["forecast"]["uvi"]]
+    avg_uvi = [ x["avg"] for x in general["forecast"]["uvi"]]
+    max_uvi = [ x["max"] for x in general["forecast"]["uvi"]]
+    min_uvi = [ x["min"] for x in general["forecast"]["uvi"]]
+  
+}}
+{{pass}}
+
+{{if general["forecast"] != 'no':}}
+
+<script>
+  var yellow = "#FFFF33";
+  var blue = "#87CEEB";
+  var red = "#F08080";
+
+  var ctx = document.getElementById('ozono').getContext('2d');
+  var ozono = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: {{=XML(day_o3)}},
+          datasets: [{
+              label: 'Ozono',
+              data: {{=XML(avg_o3)}},
+              backgroundColor: red,
+              borderColor: red,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Min',
+              data: {{=XML(min_o3)}},
+              backgroundColor: blue,
+              borderColor: blue,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Max',
+              data: {{=XML(max_o3)}},
+              backgroundColor: yellow,
+              borderColor: yellow,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          ]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          },
+          responsive: true,
+          maintainAspectRatio: false
+      }
+  });
+
+  var ctx = document.getElementById('pm10').getContext('2d');
+  var pmtf = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: {{=XML(day_pm10)}},
+          datasets: [{
+              label: 'PM10',
+              data: {{=XML(avg_pm10)}},
+              backgroundColor: red,
+              borderColor: red,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Min',
+              data: {{=XML(min_pm10)}},
+              backgroundColor: blue,
+              borderColor: blue,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Max',
+              data: {{=XML(max_pm10)}},
+              backgroundColor: yellow,
+              borderColor: yellow,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          ]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          },
+          responsive: true
+      }
+  });
+ 
+  var ctx = document.getElementById('pm25').getContext('2d');
+  var pmtf = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: {{=XML(day_pm25)}},
+          datasets: [{
+              label: 'PM25',
+              data: {{=XML(avg_pm25)}},
+              backgroundColor: red,
+              borderColor: red,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Min',
+              data: {{=XML(min_pm25)}},
+              backgroundColor: blue,
+              borderColor: blue,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Max',
+              data: {{=XML(max_pm25)}},
+              backgroundColor: yellow,
+              borderColor: yellow,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          ]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          },
+          responsive: true
+      }
+  });  
+
+  var ctx = document.getElementById('uvi').getContext('2d');
+  var uvi = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: {{=XML(day_uvi)}},
+          datasets: [{
+              label: 'UV',
+              data: {{=XML(avg_uvi)}},
+              backgroundColor: red,
+              borderColor: red,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Min',
+              data: {{=XML(min_uvi)}},
+              backgroundColor: blue,
+              borderColor: blue,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          {
+              label: 'Max',
+              data: {{=XML(max_uvi)}},
+              backgroundColor: yellow,
+              borderColor: yellow,
+              fill: false,
+              borderDash: [5, 5],
+              pointRadius: 5,
+              pointHoverRadius: 10,
+              borderWidth: 3
+          },
+          ]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          },
+          responsive: true
+      }
+  });
+
+  
+
+</script>
+
+{{pass}}
+

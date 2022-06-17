@@ -1,0 +1,119 @@
+{{extend 'layout.html'}}
+
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #eaeaea; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h2>Contaminacion</h2>
+    <h3>Centro America</h3>
+  </div>
+</div>
+{{end}}
+
+<style>
+    img{
+        width: 60% !important;
+    }
+</style>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10 text-center">
+        <div class="container">
+            <a class="btn btn-primary float-left" href="{{=URL('contaminacion','index')}}" role="button">Regresar</a>            
+        </div>
+    </div>
+    <div class="col-md-10 ">          
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
+        Conceptos          
+          <svg width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-question-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"></path>
+          </svg>
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Conceptos</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+
+                  <div class="modal-body">
+                  {{for c in conceptos:}}
+                      <h6>{{=c.titulo}}</h6>
+                      <p>{{=c.descripcion}}</p>
+                      <hr>
+                  {{pass}}
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div> 
+  
+  <br>
+
+  <div class="row justify-content-center">
+    <div class="col-md-12 text-center">
+
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div class="list-group list-group-vertical-sm" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action list-group-item-primary" id="list-nada-list" href="#" role="tab" aria-controls="nada"><strong>Contaminantes</strong></a>
+            {{for i in tipos:}}
+                <a class="list-group-item list-group-item-action" id="list-{{=i.identificador}}-list" data-toggle="list" href="#list-{{=i.identificador}}" role="tab" aria-controls="{{=i.identificador}}">{{=i.nombre}}</a>
+            {{pass}}
+            <a class="list-group-item list-group-item-action list-group-item-success" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Reporte de Contaminacion: Pais</a>
+          </div>
+        </div>        
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="nav-tabContent">
+            {{e = 0}}
+            {{for i in tipos:}}            
+                <div class="tab-pane fade" id="list-{{=i.identificador}}" role="tabpanel" aria-labelledby="list-{{=i.identificador}}-list">
+                  <div class="container">
+                    <br>
+                    <p class="justify-content-center"><strong>Descripcion: </strong>{{=i.descripcion}}</p>
+                    <img src="{{=URL('contaminacion', 'download', args=imagen[e].imagen)}}" />
+                    {{e += 1}}
+                    <br>
+                    <a class="btn btn-primary" href="contaminante_ca?tipo={{=i.id}}" role="button">Ver Imagenes</a>
+                    <span id="down"></span>
+                  </div>                    
+                </div>
+            {{pass}}
+                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                  <div class="container">
+                    <br>
+                    {{=LOAD('contaminacion','generar_reporte.load')}}
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  {{for i in tipos:}}
+    $("#list-{{=i.identificador}}-list").click(function() {
+      //$('html, body').animate({scrollTop: $("#down").offset().top}, 2000);
+      $('html,body').animate({ scrollTop: 9999 }, 5000);
+    });
+  {{pass}}
+  
+</script>

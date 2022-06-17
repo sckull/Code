@@ -1,0 +1,102 @@
+{{ extend 'admin_layout.html'}}
+
+{{block mysidebar}}
+    <h1 class="mt-4">Contenido</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><strong>{{=titulo.titulo if titulo else "Contenido"}}</strong></li>
+    </ol>
+{{end}}
+
+<!-- tinymce -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/tinymce.min.js"></script>
+<!-- tinymce -->
+
+<!-- plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/advlist/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/anchor/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/autolink/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/autoresize/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/autosave/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/bbcode/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/charmap/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/code/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/codesample/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/colorpicker/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/contextmenu/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/directionality/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/emoticons/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/fullpage/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/fullscreen/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/help/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/hr/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/image/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/imagetools/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/importcss/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/insertdatetime/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/legacyoutput/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/link/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/lists/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/media/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/nonbreaking/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/noneditable/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/pagebreak/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/paste/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/preview/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/print/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/quickbars/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/save/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/searchreplace/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/tabfocus/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/table/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/template/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/textcolor/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/textpattern/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/toc/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/visualblocks/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/visualchars/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/wordcount/plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/themes/mobile/theme.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/themes/silver/theme.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.5.1/plugins/emoticons/js/emojis.min.js"></script>
+<!-- plugins -->
+
+<div class="container-fluid">        
+    <div class="card mb-4">
+        <div class="container">
+            <br>
+            {{=form}}
+            <hr>
+            <div class="center">
+                <a href="{{=URL('contenido')}}" class="btn btn-success">Regresar</a><br>
+            </div> 
+            <br>            
+        </div>
+    </div>
+</div>
+
+
+<script>
+  tinymce.init({
+    selector:'textarea',
+    fontsize_formats: '8pt 10pt 12pt 14pt 16pt 22pt 32pt',
+    plugins: 'autolink lists media table advlist codesample anchor autolink autoresize colorpicker contextmenu directionality hr image imagetools insertdatetime link lists media nonbreaking noneditable pagebreak paste preview quickbars tabfocus table textcolor textpattern visualblocks visualchars wordcount',
+    codesample_languages: [
+        {text: 'HTML/XML', value: 'markup'},
+        {text: 'JavaScript', value: 'javascript'},
+        {text: 'CSS', value: 'css'},
+        {text: 'PHP', value: 'php'},
+        {text: 'Ruby', value: 'ruby'},
+        {text: 'Python', value: 'python'},
+        {text: 'Java', value: 'java'},
+        {text: 'C', value: 'c'},
+        {text: 'C#', value: 'csharp'},
+        {text: 'C++', value: 'cpp'}
+    ],
+    toolbar: 'addcomment showcomments table codesample undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code',
+    toolbar_mode: 'floating',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Author name',
+    });
+
+  //document.getElementById("contenido_contenido").rows = "30";  
+</script>

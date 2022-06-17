@@ -1,0 +1,413 @@
+<style type="text/css"> 
+  #circle:hover{
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+  }
+  #outer {
+    width: 100%;
+    text-align: center;
+  }
+
+  #info {
+    display: inline-block;
+  }
+  svg {
+    width:100%;
+    height: auto;
+  }
+</style>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+<script src="http://bl.ocks.org/tomshanley/raw/e6adabb6403a17990e8f4e39f5bc79eb/d3.slider.js"></script>
+  
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.2/nouislider.min.js" integrity="sha512-hwgsSKm7cPjNHLACxyMGVRrd7cH+wveyYM1ZxWxxbCZd/pXdMukyuIrrCjt2I7iLsmYDk02B1ZUcarEv1A3RVQ==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.2/nouislider.css" integrity="sha512-30YMvFlZRwPH3TcDlPWZofkzGwIwDAKshEue1qWet2yWEQ4Y/X+WnV1aTuNldE3Hbpcl5Zz4PxoXJKMMQvBHGQ==" crossorigin="anonymous" />
+
+
+<!-- MAP -->
+<div id="outer">  
+  <div id="info"></div>  
+</div>
+
+<div id="outer">  
+  <svg id="map" width="480" height="300"></svg>
+</div>
+<!--<svg width="480" height="300"></svg>-->
+
+<!--<fieldset class="form-group" id="sliderContainer">
+  <legend>Sliders</legend>
+  <label for="customRange1" id="range">{{=XML(fechas[0])}}</label>
+  <input min="0" max="{{=XML(len(fechas)-1)}}" value="0" step="1" type="range" class="custom-range" id="timeslide">
+</fieldset>-->
+
+<div id="sliderContainer">
+  <input id="timeslide" type="range" min="0" max="{{=XML(len(fechas)-1)}}" value="0" step="1" class="custom-range"/><br>
+  <span id="range">{{=XML(fechas[0])}}</span>
+</div>
+<!-- MAP -->
+
+<script>
+//var time = ["1989","2000","2004","2008","2012","2016"]
+var time = {{=XML(fechas)}}
+var year = time[0]
+
+/*var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");*/
+
+
+    var svgContainer = $("#map");
+    var width = svgContainer.width();
+    var height = svgContainer.height();
+    var aspect = width/height;
+    var container = svgContainer.parent();
+
+    var svg = d3.select("svg");
+
+    //responsive map
+function resize(){
+    // adjust things when the window size changes
+    var targetWidth = container.width();
+    svg.attr("width", targetWidth);
+    svg.attr("height", Math.round(targetWidth/aspect));
+
+    // update projection
+    projection.translate([width / 2, height / 2])
+                .scale(width/3.5);
+
+    // resize the map
+        svg.select('.lga').attr('d', path);
+}
+
+var path = d3.geoPath();
+
+//Mercator - centrado Centro America
+var projection = d3.geoMercator()
+    .center([-86, 13])
+    .scale(900)
+    .translate([ width/2, height/2 ])
+
+var path = d3.geoPath()
+    .projection(projection);
+
+// Data and color scale - https://github.com/d3/d3-scale-chromatic
+var data = d3.map();
+var colorScheme = d3.schemeOrRd[6];
+colorScheme.unshift("#eee")
+
+var colorScale = d3.scaleThreshold()
+  .domain([10, 50, 100, 300, 900, 1000])
+  .range(colorScheme);
+
+// Legend
+var g = svg.append("g")
+    .attr("class", "legendThreshold")
+    .attr("transform", "translate(20,20)");
+
+g.append("text")
+    .attr("class", "caption")
+    .attr("x", 0)
+    .attr("y", -6)
+    .text("CO2");
+
+var labels = ['0', '10', '50', '100', '300', '900', '> 1000'];
+
+var legend = d3.legendColor()
+    .labels(function (d) { return labels[d.i]; })
+    .shapePadding(1)
+    .scale(colorScale);
+
+svg.select(".legendThreshold")
+    .call(legend)
+
+//Countries, Lat, Lon
+var places = [
+  {
+    name: "Guatemala",
+    location: {
+      latitude: 14.743808,
+      longitude: -90.527383
+    }
+  },
+  {
+    name: "Belice",
+    location: {
+      latitude: 16.944368,
+      longitude: -88.780498
+    }
+  },
+  {
+    name: "Honduras",
+    location: {
+      latitude: 14.778069,
+      longitude: -87.077509
+    }
+  },{
+    name: "El Salvador",
+    location: {
+      latitude: 13.691890,
+      longitude: -88.923329
+    }
+  },{
+    name: "Nicaragua",
+    location: {
+      latitude: 12.353954,
+      longitude: -84.989976
+    }
+  },{
+    name: "Costa Rica",
+    location: {
+      latitude: 9.842227,
+      longitude: -83.825563
+    }
+  },{
+    name: "Panama",
+    location: {
+      latitude: 8.934999,
+      longitude: -79.891713
+    }
+  }
+]
+
+var Tooltip = d3.select("#info")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0)
+  .style("background-color", "white")
+  .style("border", "solid")
+  .style("border-width", "2px")
+  .style("border-radius", "5px")
+  .style("padding", "5px")
+
+// LOAD Data
+d3.queue()
+    .defer(d3.json, "{{=URL('static','map/ca.json')}}")
+    .defer(d3.csv, "{{=URL('api','mapa/contaminacion_ch4.csv')}}"+"?year="+year, function(d) {
+      //console.log(d['contaminacion.fecha'])
+      data.set(d['pais.codigo_alt'], +d['contaminacion.cantidad'])
+    }).await(ready);
+
+function update(value) {
+    document.getElementById("range").innerHTML=time[value];
+    year = time[value];
+
+    d3.select('svg').selectAll('countries').remove();
+    
+    d3.queue()
+      .defer(d3.json, "{{=URL('static','map/ca.json')}}")
+      .defer(d3.csv, "{{=URL('api','mapa/contaminacion_ch4.csv')}}"+"?year="+year, function(d) {
+        console.log(d['contaminacion.cantidad'])
+        data.set(d['pais.codigo_alt'], +d['contaminacion.cantidad'])
+      }).await(ready);
+}
+
+function ready(error, topo) {
+  if (error) throw error;
+  // Draw the map
+  svg.append("g")
+      .attr("class", "countries")
+      .selectAll("path")
+      .data(topo.features)
+      .enter()
+      .append("path")
+      .attr("fill", function (d){
+          // Data - Country
+          d.latitud = data.get(d.id) || 0;
+          // Color
+          return colorScale(d.latitud);
+      }).attr("d", path);
+  
+  d3.select("#timeslide").on("input", function() {
+    update(+this.value);
+  });
+
+  // Draw Pin - Info on div
+  svg.selectAll(".pin")
+        .data(places)
+        .enter()
+        .append("circle", ".pin")
+        .attr("r", 4)
+        .attr("id", "circle")
+        .attr("transform", function(d) {
+            return "translate(" + projection([
+                d.location.longitude,
+                d.location.latitude
+            ]) + ")";
+        }).attr('class', function(d){
+            return d.name
+        }).on("mouseover", function(d) {
+        Tooltip.style("opacity", 1)
+        }).on("mouseleave", function(d) {
+        Tooltip.style("opacity", 0)
+        }).on("mousemove",function(d) {
+        Tooltip.html(d.name)
+        })
+
+}
+
+
+
+/*
+
+
+var snapSlider = document.getElementById('snap');
+
+noUiSlider.create(snapSlider, {
+    start: 40,
+    behaviour: 'snap',
+    connect: [true, false],
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+
+snapSlider.noUiSlider.on('change', function(){
+  svg.append("g")
+      .attr("class", "countries")
+      .selectAll("path")
+      .data(data)
+      .enter()
+      .append("path")
+      .attr("fill", function (d){
+          //console.log(data)
+          // Data - Country
+          d.latitud = data.get(d.id) || 0;
+          // Color
+          return colorScale(d.latitud);
+      }).attr("d", path);
+  console.log('changing')
+})*/
+
+
+</script>
+
+<!--
+<html>
+<head>
+    <title>A D3 map</title>
+    <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+    <script src="https://bl.ocks.org/duspviz-mit/raw/57c15198c563f7f82f77eed0536eb78c/election_results_2000_2016.json"></script>
+    <style>
+        body {
+            position: absolute;
+            text-align: center;
+            font-family: "Proxima Nova", "Montserrat", sans-serif;
+        }
+        #sliderContainer {
+            position: relative;
+            top: 600px;
+        }
+        #title h1 {
+            margin-bottom: 0px;
+        }
+        #title p {
+            margin-top: 2px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="title">
+        <h1>Presidential Election Results</h1>
+        <p>By State &middot; 2000-2016</p>
+    </div>
+    <div id="sliderContainer">
+        <input id="timeslide" type="range" min="0" max="4" value="0" step="1"/><br>
+        <span id="range">2000</span>
+    </div>
+    <script>
+    var width = 920;
+    var height = 580;
+
+    var inputValue = null;
+    var time = ["2000","2004","2008","2012","2016"];
+
+    var svg = d3.select( "body" )
+        .append( "svg" )
+        .attr( "width", width )
+        .attr( "height", height );
+
+    var g = svg.append( "g" );
+
+    var albersProjection = d3.geoAlbersUsa()
+        .scale( 1000 );
+
+    var geoPath = d3.geoPath()
+        .projection( albersProjection );
+
+    g.selectAll( "path" )
+        .data( election_results_json.features )
+        .enter()
+        .append( "path" )
+        .attr( "fill", initialState )
+        .attr( "stroke", "#333")
+        .attr( "d", geoPath );
+
+    // when the input range changes update the rectangle 
+    d3.select("#timeslide").on("input", function() {
+        update(+this.value);
+    });
+
+    function update(value) {
+        document.getElementById("range").innerHTML=time[value];
+        inputValue = time[value];
+        d3.selectAll("path")
+            .style("fill", timeMatch);
+    }
+
+    function timeMatch(data) {
+        if (inputValue == "2000") {
+            
+            if (data.properties.elect2000 == "D") {
+              //console.log(data)
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        } else if (inputValue == "2004") {
+            if (data.properties.elect2004 == "D") {
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        } else if (inputValue == "2008") {
+            if (data.properties.elect2008 == "D") {
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        } else if (inputValue == "2012") {
+            if (data.properties.elect2012 == "D") {
+              console.log(data.properties)
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        } else if (inputValue == "2016") {
+            if (data.properties.elect2016 == "D") {
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        };
+    }
+
+    function initialState(data){
+        if (document.getElementById("range").innerHTML == 2000) {
+            if (data.properties.elect2000 == "D") {
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        };
+    }
+    </script>
+</body>
+</html>-->

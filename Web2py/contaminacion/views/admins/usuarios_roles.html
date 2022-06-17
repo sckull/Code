@@ -1,0 +1,23 @@
+{{ extend 'admin_layout.html'}}
+
+<!-- Web2py Bootstrap -->
+<link rel="stylesheet" href="{{=URL('static','css/bootstrap.min.css')}}"/>
+<link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap4.css')}}"/>
+{{block mysidebar}}
+    <h1 class="mt-4">Roles</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><strong>Roles</strong></li>
+    </ol>
+{{end}}
+
+
+<div class="container-fluid">        
+    <div class="card mb-4">
+        <div class="container">
+            <br>
+            {{=grid}}                         
+            <br>            
+        </div>
+    </div>
+</div>
+

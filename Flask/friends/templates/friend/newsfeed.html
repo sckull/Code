@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="This is social network html5 template available in themeforest......" />
+		<meta name="keywords" content="Social Network, Social Media, Make Friends, Newsfeed, Profile Page" />
+		<meta name="robots" content="index, follow" />
+		<title>Friends</title>
+
+    <!-- Stylesheets
+    ================================================= -->
+    
+		<link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/ionicons.min.css') }} " />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/font-awesome.min.css') }}" />
+    <link href="{{ url_for('static', filename='/css/emoji.css') }}" rel="stylesheet">
+    <!--Google Webfont-->
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,300italic,400italic,500,500italic,600,600italic,700' rel='stylesheet' type='text/css'>
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
+	</head>
+  <body>
+
+    <!-- Header
+    ================================================= -->
+		<header id="header">
+      <nav class="navbar navbar-default navbar-fixed-top menu">
+        <div class="container">
+
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="logo" /></a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right main-menu">
+              <li class="dropdown"><a href="index.html">Home</a></li>
+              <li class="dropdown"><a href="contact.html">Contact</a></li>
+            </ul>
+            <form class="navbar-form navbar-right hidden-sm">
+              <div class="form-group">
+                <i class="icon ion-android-search"></i>
+                <input type="text" class="form-control" placeholder="Search friends, photos, videos">
+              </div>
+            </form>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+      </nav>
+    </header>
+    <!--Header End-->
+
+    <div id="page-contents">
+    	<div class="container">
+    		<div class="row">          
+          <!-- Newsfeed Common Side Bar Left
+          ================================================= -->
+    			<div class="col-md-3 static">
+            <div class="profile-card">
+            	<img src="images/users/user-1.jpg" alt="user" class="profile-photo" />
+            	<h5><a href="timeline.html" class="text-white">{{ session.username }}</a></h5>
+            	<a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1337 followers</a>
+            </div><!--profile card ends-->
+            <ul class="nav-news-feed">
+              <li><i class="icon ion-ios-paper"></i><div><a href="newsfeed.html">Posts</a></div></li>
+            </ul><!--news-feed links ends-->
+          </div>
+    			<div class="col-md-7">
+
+            <!-- Post Create Box
+            ================================================= -->
+            <div class="create-post">
+            	<div class="row">
+            		<div class="col-md-7 col-sm-7">
+
+                  <form class="form-group" method=post>
+                    <!--<img src="images/users/user-1.jpg" alt="" class="profile-photo-md" />-->
+                    <textarea name="body" rows="1" cols="410" class="form-control" placeholder="What are you thinking?"></textarea>
+
+                    <div class="col-md-5 col-sm-5">
+                      <div class="tools">
+                        <ul class="publishing-tools list-inline">
+                          <button class="btn btn-primary pull-right" type="submit">Post</button>      
+                        </ul>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            	</div>
+            </div><!-- Post Create Box End-->
+
+            <!-- Post Content
+            ================================================= -->
+            <div class="post-content">
+              
+
+              <div class="post-container">
+                <img src="images/users/user-5.jpg" alt="user" class="profile-photo-md pull-left" />
+                <div class="post-detail">
+                  <div class="user-info">
+                    <h5><a href="timeline.html" class="profile-link">Alexis Clark</a></h5>
+                    <p class="text-muted">Published a photo about 3 mins ago</p>
+                  </div>
+                  <div class="line-divider"></div>
+                  <div class="post-text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. <i class="em em-anguished"></i> <i class="em em-anguished"></i> <i class="em em-anguished"></i></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+
+          <!-- Newsfeed Common Side Bar Right
+          ================================================= -->
+    			
+    		</div>
+    	</div>
+    </div>
+
+    <!-- Footer
+    ================================================= -->
+    <footer id="footer">
+      <div class="container">
+      	<div class="row">
+          <div class="footer-wrapper">
+
+            <div class="col-md-3 col-sm-3">
+              <a href=""><img src="images/logo-black.png" alt="" class="footer-logo" /></a>
+              <ul class="list-inline social-icons">
+              	<li><a href="#"><i class="icon ion-social-facebook"></i></a></li>
+              	<li><a href="#"><i class="icon ion-social-twitter"></i></a></li>
+              	<li><a href="#"><i class="icon ion-social-googleplus"></i></a></li>
+              	<li><a href="#"><i class="icon ion-social-pinterest"></i></a></li>
+              	<li><a href="#"><i class="icon ion-social-linkedin"></i></a></li>
+              </ul>
+            </div>
+
+            <div class="col-md-2 col-sm-2">
+              <h6>For individuals</h6>
+              <ul class="footer-links">
+                <li><a href="">Signup</a></li>
+                <li><a href="">Login</a></li>
+                <li><a href="">Find Friends</a></li>                
+              </ul>
+            </div>
+            
+          </div>
+      	</div>
+      </div>
+      <div class="copyright">
+        <p>Friends - 2021</p>
+        <credit>Theme: <a href="https://themes.emmotivity.com/2016/11/friend-finder-social-network-html5.html">emmotivity</a></credit>        
+      </div>
+		</footer>
+    
+    <!--preloader-->
+    <div id="spinner-wrapper">
+      <div class="spinner"></div>
+    </div>
+    
+    <!-- Scripts
+    ================================================= -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTMXfmDn0VlqWIyoOxK8997L-amWbUPiQ&callback=initMap"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.sticky-kit.min.js"></script>
+    <script src="js/jquery.scrollbar.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

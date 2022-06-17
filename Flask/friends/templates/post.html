@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<style>
+  #what{width: 393px !important; height: 50px !important;}
+</style>
+  <div id="page-contents">
+    <div class="container">
+      <div class="row">
+
+        <!-- Newsfeed Common Side Bar Left
+        ================================================= -->
+        <div class="col-md-3 static">
+          
+            {% if user_visit:%}
+              <div class="profile-card">
+                  <img src="{{user_visit.avatar(64)}}" alt="user" class="profile-photo" />
+                  <h5><a href="{{url_for('user',id=user_visit.id)}}" class="text-white">{{user_visit.name}} {{user_visit.lastname}}</a></h5>
+              </div><!--profile card ends-->
+              <ul class="nav-news-feed">
+                <li><i class="icon ion-ios-paper"></i><div>About Me</div></li>
+                {% if user_visit.info|length ==0: %}
+                  <li><div>Nothing.</div></li>
+                {%else:%}
+                  <li><div>{{user_visit.info}}</div></li>
+                {%endif%}
+              </ul>
+              <!--news-feed links ends-->
+            {%endif%}
+
+            {% if not user_visit: %}
+                <div class="profile-card">
+                  <img src="{{user.avatar(64)}}" alt="user" class="profile-photo" />
+                  <h5><a href="{{url_for('post')}}" class="text-white">{{user.name}} {{user.lastname}}</a></h5>
+                </div><!--profile card ends-->
+                <ul class="nav-news-feed">
+                  <li><i class="icon ion-ios-paper"></i><div>About Me</div></li>
+                  {% if user.info|length ==0: %}
+                    <li><div>Nothing.</div></li>
+                  {%else:%}
+                    <li><div>{{user.info}}</div></li>
+                  {%endif%}
+                </ul>
+                <!--news-feed links ends-->
+            {% endif %}
+        </div>
+
+        <div class="col-md-7">
+
+          <!-- Post Create Box
+          ================================================= -->
+          <div class="create-post">
+            <div class="row">
+              <div class="col-md-10 col-sm-10">
+                {% if not user_visit: %}
+                  <form class="form-group" method=post>
+                    <img src="{{user.avatar(64)}}" alt="" class="profile-photo-md" />
+                    <textarea name="body" rows="1" cols="410" id="what" class="form-control" placeholder="What are you thinking?"></textarea>
+                    
+                    <div class="col-md-5 col-sm-5">
+                      <div class="tools">
+                        <ul class="publishing-tools list-inline">
+                          <button class="btn btn-primary pull-right" type="submit">Post</button>      
+                        </ul>
+                      </div>
+                    </div>
+                  </form>
+                {% else: %}
+                <div class="col-md-5 col-sm-5">
+                  <div class="tools">
+                    <ul class="publishing-tools list-inline">
+                      <h4>Posts</h4>
+                    </ul>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div><!-- Post Create Box End-->
+
+          <!-- Post Content
+          ================================================= -->
+          <!-- Post Content -->
+            <div class="post-content">
+              {% if user_visit: %}
+                {% for post in posts: %}
+                  <div class="post-container">
+                    <img src="{{ user_visit.avatar(64) }}" alt="user" class="profile-photo-md pull-left" />
+                    <div class="post-detail">
+                      <div class="user-info">
+                        <h5><a href="{{url_for('user', id=user_visit.id) }} " class="profile-link">{{ user_visit.name }} {{ user_visit.lastname }}</a></h5>
+                        <p class="text-muted">Published: {{post.timestamp.strftime('%d/%m/%y')}}</p>
+                      </div>
+                      <div class="line-divider"></div>
+                      <div class="post-text">
+                        <p>{{post.body}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else: %}
+                {% for post in posts: %}
+                  <div class="post-container">
+                    <img src="{{ user.avatar(64) }}" alt="user" class="profile-photo-md pull-left" />
+                    <div class="post-detail">
+                      <div class="user-info">
+                        <h5><a href="{{url_for('post') }} " class="profile-link">{{ user.name }} {{ user.lastname }}</a></h5>
+                        <p class="text-muted">Published: {{post.timestamp.strftime('%d/%m/%y')}}</p>
+                      </div>
+                      <div class="line-divider"></div>
+                      <div class="post-text">
+                        <p>{{post.body}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+            
+          </div>
+        </div>
+
+        <!-- Newsfeed Common Side Bar Right
+        ================================================= -->
+        <!--<div class="col-md-2 static">
+          <div class="suggestions" id="sticky-sidebar">
+            <h4 class="grey">Who to Follow</h4>
+            <div class="follow-user">
+              <img src="images/users/user-11.jpg" alt="" class="profile-photo-sm pull-left" />
+              <div>
+                <h5><a href="timeline.html">Diana Amber</a></h5>
+                <a href="#" class="text-green">Add friend</a>
+              </div>
+            </div>
+          </div>
+        </div>-->
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

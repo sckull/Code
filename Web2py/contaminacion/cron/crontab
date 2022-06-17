@@ -1,0 +1,2 @@
+#crontab
+11 0-23/1 * * * root python *applications/contaminacion/cron/calidadaire.py

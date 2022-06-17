@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- IA -->
+        <div class="col-6">
+            <h3 class="h3">Entrenamiento - Predicción</h3>
+            <hr>
+            <figure class="figure">
+                <img src="https://blogthinkbig.com/wp-content/uploads/2017/12/a-2729794_1280-1-610x520.png" class="figure-img img-fluid rounded" width="40%" >
+            </figure>
+            
+            <div class="container" align="center">
+                <button class="btn btn-primary" onclick="" disabled=true>Actualizar Entrenamiento <i class="fa fa-cogs" aria-hidden="true"></i></button>
+            </div>
+            <hr>
+            <div align="center">
+                <span class="badge badge-primary" id="load1" style="display: none;">Cargando ...</span>
+                <span class="badge badge-success" id="success1" style="display: none;">Actualizacion Exitosa</span>
+                <span class="badge badge-danger" id="error1" style="display: none;">Error</span>
+            </div>
+            <hr>
+        </div>
+        <!-- GRAFICAS -->
+        <div class="col-6">
+            <h3 class="h3">Actualizar - Graficas</h3>
+            <hr>
+            <figure class="figure">
+                <img src="https://static.vecteezy.com/system/resources/previews/000/495/336/non_2x/bell-shaped-graph-line-black-icon-vector.jpg" class="figure-img img-fluid rounded" width="40%" >
+            </figure>
+            <div class="container" align="center">
+                <button class="btn btn-primary" onclick="updateGraficas()">Actualizar Graficas <i class="fa fa-signal" aria-hidden="true"></i>
+                </button>
+            </div>            
+            <hr>
+            <div align="center">
+                <span class="badge badge-primary" id="load" style="display: none;">Cargando ...</span>
+                <span class="badge badge-success" id="success" style="display: none;">Actualizacion Exitosa</span>
+                <span class="badge badge-danger" id="error" style="display: none;">Error</span>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br>
+<script>
+    function updateGraficas(){
+        document.getElementById('load').style.display = 'inline';
+        $.get("/ia", { grf: "0" }).done(function(data) {
+            if(data == "complete"){
+                document.getElementById('load').style.display = 'none';
+                document.getElementById('success').style.display = 'inline';
+            }else{
+                document.getElementById('load').style.display = 'none';
+                document.getElementById('error').style.display = 'inline';
+            }
+            //console.log(data)
+        });
+    }
+
+    function updateEntrenamiento(){
+        document.getElementById('load1').style.display = 'inline';
+        $.get("/ia", { entrenamiento: "0" }).done(function(data) {
+            if(data == "complete"){
+                document.getElementById('load1').style.display = 'none';
+                document.getElementById('success1').style.display = 'inline';
+            }else{
+                document.getElementById('load1').style.display = 'none';
+                document.getElementById('error1').style.display = 'inline';
+            }
+            //console.log(data)
+        });
+    }
+</script>
+{% endblock %}

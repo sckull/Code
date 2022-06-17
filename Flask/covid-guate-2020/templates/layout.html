@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>COVID19 - UMG</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/vnd.microsoft.icon" href="{{ url_for('static', filename='/img/favicon.ico') }}" sizes="16x16">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style.css') }}"> 
+    <!-- fontawesome -->
+    <script src="https://use.fontawesome.com/a6cfece5bb.js"></script>
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datasource@0.1.0"></script>
+  </head>
+  <body class="overflow-auto">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="{{ url_for('index')}}"><strong>COVID-19 - Inicio</strong></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('informacion')}}">Informacion <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('ia')}}">Control<span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Banner -->
+    <div class="container">
+      <img src="{{ url_for('static', filename='/img/cover.png')}}" alt="coronavirus" height="30%" width="30%">
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    {% block footer %} 
+    <footer class="footer">
+      <nav class="navbar static-bottom navbar-expand-sm navbar navbar-dark bg-dark" >
+        <a class="navbar-brand" href="{{ url_for('index')}}"><strong>UMG 2020</strong></a>
+      </nav>  
+    </footer>
+    {% endblock %}
+    </div>
+  </body>
+</html>
