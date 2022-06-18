@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+{% block title %} Edit Post {% endblock %}
+
+{% block stylesheet %}
+
+<link href="/static/select2/vendor/select2/select2.css?v=3.5.2" rel="stylesheet">
+<link href="/static/select2/vendor/select2/select2-bootstrap3.css?v=1.4.6" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+  <h1>Edit Post</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('posts') }}">Posts</a></li>
+      <li class="breadcrumb-item">Edit Post</li>
+    </ol>
+  </nav>
+</div>
+<section class="section">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col mt-0">
+              <h5 class="card-title">Post: {{ post.title }}</h5>
+              <div class="col-auto" >
+                <a class="btn btn-primary btn-sm" href="{{url_for('posts')}}" style="float: right;">
+                  <i class="ri-arrow-left-line"></i> Posts
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="mb-0">
+          {% from "forms/_formhelpers.html" import render_field %}
+            <form action="{{ url_for('edit_post', id=post.id ) }}" method="POST" enctype="multipart/form-data">
+              <dl>
+                {{ form.csrf_token() }}
+                {% if form.csrf_token.errors %}
+                    <div class="warning">You have submitted an invalid CSRF token</div>
+                {% endif %}
+                {{ render_field(form.title,     class="form-control", placeholder="Awesome tittle") }}
+
+                <!-- Rare bug on textarea with EasyMDE -->
+                <!--{{ render_field(form.body,      class="form-control", placeholder="Use Markdown syntax", rows="30", cols="90") }}-->
+                <div class="mt-3">
+                  <label for="content">Body</label>
+                  <textarea name="body" class="form-control" placeholder="Use Markdown syntax", rows="30", cols="90" id="content">{{post.body}}</textarea>
+                </div> 
+                <!-- Rare bug on textarea with EasyMDE -->
+
+                {{ render_field(form.description,      class="form-control", value=post.description) }}
+                {{ render_field(form.timestamp,        class="form-control") }}
+
+                {% if post.published %}
+                  {{ form.published.label(class="form-label") }}
+                  {{ form.published(class="form-check-input", checked=True) }}                  
+                {% else %}
+                    {{ form.published.label(class="form-label") }}
+                    {{ form.published(class="form-check-input") }}
+                {% endif %}
+                <br>
+                <label class="form-label" for="image">Featured Image</label>
+                <input class="form-control" id="image" name="image" type="file">
+                <!--{{ render_field(form.image,            class="form-control" ) }}-->
+                {{ render_field(form.tags,             class="form-control") }}
+
+                <a class="text-primary small pt-2 ps-1" href="{{ url_for('new_tag' ) }}" id="tag">
+                  <i class="ri-price-tag-3-line text-primary"></i>
+                  <span> New Tag</span>
+                </a>
+              </dl>
+              <div class="text-center mt-3">
+                <input type=submit class="btn btn-sm btn-primary" value="submit" >
+              </div>              
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalConfirm" tabindex="-1" aria-labelledby="myModalLabel"  data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Redirecting ... </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You are being redirected.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a type="button" class="btn btn-primary" id="redConfirm">Ok</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/static/select2/vendor/select2/select2.min.js?v=3.5.2" type="text/javascript"></script>
+<script src="/static/select2/js/form.js?v=1.0.1" type="text/javascript"></script>
+  <script type="text/javascript">
+    // Redirect to Tags
+    $(function() {
+      $("#tag").click(function() {
+        $("#redConfirm").attr("href", $(this).attr("href"));
+        $("#modalConfirm").modal('toggle');
+        return false;
+      });
+      $('#image').tooltip({'trigger':'hover', 'title': 'Recommended dimensions 600x400'});
+    });
+  </script>
+<script>
+  const easymde = new EasyMDE();
+</script>
+
+{% endblock %}

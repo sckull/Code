@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %} Edit Tag {% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+  <h1>Edit Tag</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('tags') }}">Tags</a></li>
+      <li class="breadcrumb-item">Edit Tag</li>
+    </ol>
+  </nav>
+</div>
+<section class="section">
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">Tag: {{ tag.name }}</h5>
+            <div class="col-auto" >
+              <a class="btn btn-sm btn-primary" href="{{url_for('tags')}}" style="float: right;">
+                <i class="ri-arrow-left-line"></i> Tags
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="mb-0">
+          {% from "forms/_formhelpers.html" import render_field %}
+          <form action="{{ url_for('edit_tag', id=tag.id ) }}" method="POST">
+            <dl>
+              {{ form.csrf_token() }}
+              {% if form.csrf_token.errors %}
+                  <div class="warning">You have submitted an invalid CSRF token</div>
+              {% endif %}
+              {{ render_field(form.name, class="form-control" ) }}
+              {{ render_field(form.description, class="form-control" ) }}
+            </dl>
+            <div class="text-center mt-3">
+              <input type=submit class="btn btn-sm btn-primary" value="Submit" >
+            </div>                      
+          </form>
+        </div>
+      </div>
+    </div>        
+  </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %} Posts {% endblock %}
+
+{% block stylesheet %} 
+
+  <!-- CSS Style -->
+  <!-- https://github.com/sindresorhus/github-markdown-css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/light.css') }} ">
+  {{ css_style |safe }}
+  <!-- CSS Style -->
+
+{% endblock %}
+
+{% block content %}
+    <div class="pagetitle">
+      <h1>Preview</h1>
+      <nav>
+        <ol class="breadcrumb">          
+          <li class="breadcrumb-item"><a href="{{ url_for('posts') }}">Posts</a></li>
+          <li class="breadcrumb-item active">Preview</li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <!-- button float -->
+              <div class="row">
+                <div class="col mt-3">
+                  <div class="col-auto" >
+                    <a class="btn btn-primary btn-sm" href="{{url_for('posts')}}" style="float: right;">
+                      <i class="ri-arrow-left-line"></i> Posts
+                    </a>
+                  </div>
+                </div>          
+              </div>
+              <!-- button float -->
+              <h1 class="card-title"> Title: {{ post.title }} </h1>
+              <img src="/{{post.featured_image}}" width="25%" class="mt-3">
+              <article class="markdown-body mt-3">
+                <h4>Content: </h4>
+                {{ post.body | safe }}              
+              </article>
+            </div>
+          </div>
+
+        </div>
+    </section>
+
+
+{% endblock %}

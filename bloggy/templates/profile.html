@@ -1,0 +1,149 @@
+{% extends 'layout.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Profile</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <!--<li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
+      <li class="breadcrumb-item active">My Profile</li>
+    </ol>
+  </nav>
+
+</div>
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">              
+              <img src="/{{ current_user.image if current_user.image else url_for('static', filename='images/default.png') }}" alt="Profile" class="rounded-circle">
+              <h2>{{current_user.first_name + " " + current_user.last_name }}</h2>
+              <h3>{{ current_user.job }}</h3>
+
+              <div class="social-links mt-2">
+                <a href="{{ current_user.twitter if current_user.twitter else '#' }}" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="{{ current_user.facebook if current_user.facebook else '#' }}" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="{{ current_user.instagram if current_user.instagram else '#' }}" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="{{ current_user.linkedin if current_user.linkedin else '#' }}" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                <a href="{{ current_user.github if current_user.github else '#' }}" class="github"><i class="bi bi-github"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#password-change">Change Password</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">About</h5>
+                  <p class="small fst-italic">{{ current_user.about }}</p>
+
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                    <div class="col-lg-9 col-md-8">{{current_user.first_name + " " + current_user.last_name }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Job</div>
+                    <div class="col-lg-9 col-md-8">{{ current_user.job }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">{{current_user.email}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Username</div>
+                    <div class="col-lg-9 col-md-8">{{current_user.username}}</div>
+                  </div>
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                	{% from "forms/_formhelpers.html" import render_field %}
+            					<form action="{{ url_for('profile' ) }}" method="POST" enctype="multipart/form-data">
+            					  <dl>
+            					  {{ form.csrf_token() }}
+            					 	{% if form.csrf_token.errors %}
+            					    <div class="warning"> You have submitted an invalid CSRF token </div>
+            						{% endif %}
+            						{{ render_field( form.first_name, class="form-control" ) }}
+            						{{ render_field( form.last_name,  class="form-control" ) }}
+                        {{ render_field( form.image,      class="form-control") }}
+                        {{ render_field( form.about,      class="form-control" ) }}
+                        {{ render_field( form.job,        class="form-control" ) }}
+                        {{ render_field( form.username,   class="form-control" ) }}
+                        {{ render_field( form.email,      class="form-control" ) }}
+                        <hr>
+
+                        {{ render_field( form.twitter,    class="form-control" ) }}
+                        {{ render_field( form.facebook,   class="form-control" ) }}
+                        {{ render_field( form.instagram,  class="form-control" ) }}
+                        {{ render_field( form.linkedin,   class="form-control" ) }}
+                        {{ render_field( form.github,     class="form-control" ) }}			    
+            					  </dl>
+            					  <div class="text-center mt-3">
+            					  	<input type=submit class="btn btn-sm btn-primary" value="Submit" >
+            						</div>										  
+            					</form>
+                </div>
+
+                <div class="tab-pane fade password-change pt-3" id="password-change">
+
+                  {% from "forms/_formhelpers.html" import render_field %}
+                    <form action="{{ url_for('change_password') }}" method="POST">
+                      <dl>
+                      {{ password_form.csrf_token() }}
+                      {% if form.csrf_token.errors %}
+                        <div class="warning"> You have submitted an invalid CSRF token </div>
+                      {% endif %}              
+                      {{ render_field( password_form.password,   class="form-control" ) }}
+                      {{ render_field( password_form.confirm_password, class="form-control" ) }}                 
+                      </dl>
+                      <div class="text-center mt-3">
+                        {{ password_form.submit(class="btn btn-sm btn-primary") }}
+                      </div>                      
+                    </form>
+                  </div>
+               
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    
+{% endblock %}

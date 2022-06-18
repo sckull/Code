@@ -1,0 +1,51 @@
+{% extends "blog_base.html" %}
+
+{% block title %} {{post.title}} {% endblock %}
+
+{% block stylesheet %}
+  <!-- CSS Style -->
+  <!-- https://github.com/sindresorhus/github-markdown-css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/light.css') }} ">
+  {{ css_style | safe }}
+
+  <!-- CSS Style -->
+{% endblock %}
+
+{% block content %}
+
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">{{post.title}}</h1>
+        <div class="text-muted fst-italic mb-2">Posted on {{post.timestamp.strftime("%d %B, %Y")}} by <a href="{{ url_for('editor',id=post.user_info.id ) }}">{{post.user_info.username}}</a></div>
+    </header>
+    <figure class="mb-4">
+        <img class="img-fluid rounded" src="/{{post.featured_image}}" alt="..." />
+    </figure>
+    <section class="mb-5 markdown-body">
+        {{ post.body | safe }}
+    </section>
+</article>
+
+{% endblock %}
+
+{% block sidewidgets %}
+<div class="card mb-4">
+    <div class="card-header">Tags</div>
+    <div class="card-body">
+        <div class="row">            
+            {% for tag in post.tags %}
+            <div class="col-sm-6">
+                <ul class="list-unstyled mb-0">
+                    <li><a href="{{url_for('tag',id=tag.id)}}"><span class="badge bg-primary">{{ tag.name }}</span></a></li>
+                </ul>
+            </div>
+            {% endfor %}            
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Description</div>
+    <div class="card-body">{{post.description}}</div>
+</div>
+{% endblock %}

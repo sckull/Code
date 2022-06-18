@@ -1,0 +1,118 @@
+{% extends 'layout.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Profile</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <!--<li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
+      <li class="breadcrumb-item active">User</li>
+    </ol>
+  </nav>
+
+</div>
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">              
+              <img src="{{ '../' + user.image if user.image else url_for('static', filename='images/default.png') }}" alt="Profile" class="rounded-circle">
+              <h2>{{user.first_name + " " + user.last_name }}</h2>
+              <h3>{{ user.job }}</h3>
+
+              <div class="social-links mt-2">
+                <a href="{{ user.twitter if user.twitter else '#' }}" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="{{ user.facebook if user.facebook else '#' }}" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="{{ user.instagram if user.instagram else '#' }}" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="{{ user.linkedin if user.linkedin else '#' }}" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                <a href="{{ user.github if user.github else '#' }}" class="github"><i class="bi bi-github"></i></a>
+              </div>
+              
+              <hr>
+
+              <div class="profile-overview col-xl-12">
+                  <h5 class="card-title">About</h5>
+                  <p class="small fst-italic">{{ user.about }}</p>
+
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                    <div class="col-lg-9 col-md-8">{{user.first_name + " " + user.last_name }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Job</div>
+                    <div class="col-lg-9 col-md-8">{{ user.job }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">{{user.email}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Username</div>
+                    <div class="col-lg-9 col-md-8">{{user.username}}</div>
+                  </div>
+              </div>
+             
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#posts-overview">Posts</button>
+                </li>
+              </ul>
+
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active" id="posts-overview">
+                  <h5 class="card-title">Posts</h5>                 
+                  <!-- POSTS -->
+                    {% for post in posts %}
+                      <div class="card mb-3">
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                            <img src="/{{post.featured_image}}" class="img-fluid rounded-start" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <h5 class="card-title"><a href="#">{{post.title}}</a></h5>
+                              <div class="card-subtitle mb-2 text-muted">
+                                {%for tag in post.tags%}
+                                  <span class="badge rounded-pil bg-primary">{{ tag.name }}</span> 
+                                {% endfor %}
+                              </div>
+                              <p class="card-text">{{ post.description }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  <!-- POSTS -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+{% endblock %}

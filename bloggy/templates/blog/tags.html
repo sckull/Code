@@ -1,0 +1,22 @@
+{% extends "blog_base.html" %}
+
+{% block title %} Tags {% endblock %}
+
+{% block content %}
+
+<article>
+    <header class="mb-4">        
+        <h1 class="fw-bolder mb-1">Tags</h1>        
+    </header>
+    
+    <section class="mb-5">
+        <div class="list-group">            
+            {% for tag in tags %}
+                <a href="{{url_for('tag',id=tag.id)}}" class="list-group-item list-group-item-action">{{tag.name}}</a>
+            {% endfor %}          
+        </div>
+    </section>
+</article>
+
+{% endblock %}
+

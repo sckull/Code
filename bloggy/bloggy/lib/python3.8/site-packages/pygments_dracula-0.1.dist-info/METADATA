@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: pygments-dracula
+Version: 0.1
+Summary: Pygments plugin version of the dracula theme to use with pygmentize.
+Home-page: https://github.com/thedelchop/pygments-dracula-plugin
+Author: Joseph DelCioppio
+Author-email: joseph.delcioppio@gmail.com
+License: BSD
+Keywords: pygments style dracula
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Plugins
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: pygments (>=1.4)
+
+UNKNOWN
+
+

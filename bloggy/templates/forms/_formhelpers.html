@@ -1,0 +1,21 @@
+{% macro render_field(field) %}
+
+  {{ field.label( class="form-label" ) }}
+  {{ field(**kwargs)|safe }}
+
+  {% if field.errors %}
+    <ul class=errors>
+      {% for error in field.errors %}
+      <li style="list-style: none;">
+        <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+          <i class="bi bi-exclamation-triangle me-1"></i>
+            {{ error }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+
+{% endmacro %}
