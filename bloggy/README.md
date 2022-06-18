@@ -1,0 +1,6 @@
+```
+virtualenv bloggy
+source bloggy/bin/activate
+pip install -r requirements.txt
+flask run
+```
